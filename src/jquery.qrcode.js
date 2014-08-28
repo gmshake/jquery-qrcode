@@ -46,13 +46,13 @@
 			return canvas;
 		}
 
-		// from Jon-Carlos Rivera (https://github.com/imbcmdth)
-		var createTable	= function(){
+		// from Zlei Huang (https://github.com/gmshake)
+		var createTable = function(){
 			// create the qrcode itself
 			var qrcode	= new QRCode(options.typeNumber, options.correctLevel);
 			qrcode.addData(options.text);
 			qrcode.make();
-			
+
 			// create table element
 			var $table	= $('<table></table>')
 				.css("width", options.width+"px")
@@ -60,26 +60,20 @@
 				.css("border", "0px")
 				.css("border-collapse", "collapse")
 				.css('background-color', options.background);
-		  
-			// compute tileS percentage
-			var tileW	= options.width / qrcode.getModuleCount();
-			var tileH	= options.height / qrcode.getModuleCount();
 
 			// draw in the table
-			for(var row = 0; row < qrcode.getModuleCount(); row++ ){
-				var $row = $('<tr></tr>').css('height', tileH+"px").appendTo($table);
+			for(var row = 0; row < qrcode.getModuleCount(); row++){
+				var $row = $('<tr></tr>').appendTo($table);
 				
-				for(var col = 0; col < qrcode.getModuleCount(); col++ ){
+				for(var col = 0; col < qrcode.getModuleCount(); col++){
 					$('<td></td>')
-						.css('width', tileW+"px")
 						.css('background-color', qrcode.isDark(row, col) ? options.foreground : options.background)
 						.appendTo($row);
-				}	
+				}
 			}
-			// return just built canvas
+
 			return $table;
 		}
-  
 
 		return this.each(function(){
 			var element	= options.render == "canvas" ? createCanvas() : createTable();
